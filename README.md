@@ -73,12 +73,20 @@ sudo usermod -aG docker ubuntu
 
 # To use SSH to connect to the virtual machine, do the following:
 
-### Run terraform output to get the SSH private key and save it to a file.
- - terraform output -raw tls_private_key > id_rsa
+1. Run [terraform output](https://www.terraform.io/cli/commands/output) to get the SSH private key and save it to a file.
 
-### Run terraform output to get the virtual machine public IP address.
- - terraform output public_ip_address. 
- - If your having trouble seeing the IP after running the output command run **"terraform apply -refresh-only"** to refresh the state file.
+    ```console
+    terraform output -raw tls_private_key > id_rsa
+    ```
 
-### Use SSH to connect to the virtual machine.
- - ssh -i id_rsa azureuser@<public_ip_address>
+1. Run [terraform output](https://www.terraform.io/cli/commands/output) to get the virtual machine public IP address.
+
+    ```console
+    terraform output public_ip_address
+    ```
+
+1. Use SSH to connect to the virtual machine.
+
+    ```console
+    ssh -i id_rsa azureuser@<public_ip_address>
+    ```
