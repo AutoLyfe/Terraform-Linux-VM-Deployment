@@ -50,7 +50,7 @@ resource "azurerm_subnet_network_security_group_association" "Test_SA" {
 }
 ```
 
-# Bootsrap the VM with Docker
+# Bootstrap the VM with Docker
 
 I decided to furthur add onto the original deployment by bootstrapping the VM with Docker using the below Bash Script
 
