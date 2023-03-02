@@ -6,6 +6,24 @@ Terraform module to create a complete Linux environment which include a virtual 
 
 # Usage
 
+I have decided to stray from the example provided in the Microsoft learn documentation and create multiple subnets using the for_each loop 
+
+```terraform
+resource "azurerm_subnet" "subnet" {
+  for_each             = var.subnets
+  resource_group_name  = azurerm_resource_group.Test_RG.name
+  virtual_network_name = azurerm_virtual_network.Test_Vnet.name
+  name                 = each.value["name"]
+  address_prefixes     = each.value["address_prefixes"]
+}
+```
+
+# Create Network Security Group
+resource "azurerm_network_security_group" "Test_NSG" {
+  name                = "${var.Prefix}-NSG"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.Test_RG.name
+}
 
 
 # To use SSH to connect to the virtual machine, do the following:
