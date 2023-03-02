@@ -1,12 +1,12 @@
 # Use Terraform to create a Linux VM
 
-Terraform module to create a complete Linux environment which include a virtual network, subnet, public IP address and more, according to <a href= 
+Terraform project to create a complete Linux environment which include a virtual network, subnet, public IP address and more, according to <a href= 
 "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-terraform">Microsoft Learn</a>
 
 
 # Usage
 
-I have decided to stray from the example provided in the Microsoft learn documentation and create multiple subnets using the for_each loop 
+I have decided to stray from the example provided in the Microsoft learn documentation and create multiple subnets using the for_each loop. Note the syntax needed to associate both subnets to the Network Security Group
 
 ```terraform
 resource "azurerm_subnet" "subnet" {
@@ -17,6 +17,31 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = each.value["address_prefixes"]
 }
 
+# Create Network Security Group
+resource "azurerm_network_security_group" "Test_NSG" {
+  name                = "${var.Prefix}-NSG"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.Test_RG.name
+}
+
+
+# Create Network Security Group rule
+resource "azurerm_network_security_rule" "Test_SR1" {
+  name                        = "SSH"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.Test_RG.name
+  network_security_group_name = azurerm_network_security_group.Test_NSG.name
+}
+
+
+# Connect the network security group to the subnets
 resource "azurerm_subnet_network_security_group_association" "Test_SA" {
   for_each                  = azurerm_subnet.subnet
   subnet_id                 = each.value.id
