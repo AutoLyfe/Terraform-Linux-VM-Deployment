@@ -16,6 +16,12 @@ resource "azurerm_subnet" "subnet" {
   name                 = each.value["name"]
   address_prefixes     = each.value["address_prefixes"]
 }
+
+resource "azurerm_subnet_network_security_group_association" "Test_SA" {
+  for_each                  = azurerm_subnet.subnet
+  subnet_id                 = each.value.id
+  network_security_group_id = azurerm_network_security_group.Test_NSG.id
+}
 ```
 
 # Create Network Security Group
