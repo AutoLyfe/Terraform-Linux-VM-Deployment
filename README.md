@@ -49,6 +49,28 @@ resource "azurerm_subnet_network_security_group_association" "Test_SA" {
   network_security_group_id = azurerm_network_security_group.Test_NSG.id
 }
 ```
+
+# Bootsrap the VM with Docker
+
+I decided to furthur add onto the original deployment by bootstrapping the VM with Docker using the below Bash Script
+
+```bash
+#!/bin/bash
+sudo apt-get update -y && 
+sudo apt-get install -y \
+apt-transport-https \
+ca-certificates \
+curl \
+gnupg-agent \
+software-properties-common &&
+curl -fsSl https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
+sudo apt-get update -y &&
+sudo sudo apt-get install docker-ce docker-ce-cli containerd.io -y &&
+sudo usermod -aG docker ubuntu
+```
+
+
 # To use SSH to connect to the virtual machine, do the following:
 
 ### Run terraform output to get the SSH private key and save it to a file.
