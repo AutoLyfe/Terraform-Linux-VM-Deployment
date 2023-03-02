@@ -1,3 +1,8 @@
+# Use Terraform to create a Linux VM
+
+Terraform module to create a complete Linux environment which include a virtual network, subnet, public IP address and more, according to Microsoft Best Practice< 
+https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-terraform>
+
 
 # To use SSH to connect to the virtual machine, do the following steps:
 
